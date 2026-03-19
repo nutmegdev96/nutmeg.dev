@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Matrix canvas background -->
+    <canvas id="matrixCanvas"></canvas>
+    
+    <!-- Initial overlay with logo -->
+    <div id="initialOverlay" class="overlay">
+        <div class="logo-container">
+            <div class="logo">
+                <span class="logo-bracket">{</span>
+                <span class="logo-name">DEV</span>
+                <span class="logo-bracket">}</span>
+            </div>
+            <div class="logo-subtitle">INITIALIZING SYSTEM...</div>
+        </div>
+    </div>
+
+    <!-- Main content (initially hidden) -->
+    <div id="mainContent" class="main-content hidden">
+        <!-- Header with navigation -->
+        <header>
+            <nav>
+                <div class="nav-logo">
+                    <span class="logo-bracket-small">{</span>
+                    <span class="logo-name-small">DEV</span>
+                    <span class="logo-bracket-small">}</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">HOME</a></li>
+                    <li><a href="#skills">SKILLS</a></li>
+                    <li><a href="#services">SERVICES</a></li>
+                    <li><a href="#contact">CONTACT</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <div class="terminal-text">
+                <span class="prompt">$</span>
+                <span class="command">whoami</span>
+            </div>
+            <h1 class="glitch-title">
+                <span class="glitch-text">FULL-STACK</span>
+                <span class="glitch-text glow">DEVELOPER</span>
+            </h1>
+            <p class="bio">
+                Specialized in <span class="highlight">JavaScript/TypeScript</span>, 
+                <span class="highlight">Python</span>, <span class="highlight">SQL</span>.
+                Exploring the future with <span class="highlight-web3">Web3</span>, 
+                <span class="highlight-web3">Solidity</span> and 
+                <span class="highlight-web3">Smart Contracts</span>.
+            </p>
+            <div class="cta-buttons">
+                <button class="btn-primary" onclick="scrollToSection('contact')">
+                    ➜ REQUEST QUOTE
+                </button>
+                <button class="btn-secondary" onclick="scrollToSection('skills')">
+                    EXPLORE MY SKILLS
+                </button>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="section">
+            <h2 class="section-title">
+                <span class="title-bracket">[</span> SKILLS <span class="title-bracket">]</span>
+            </h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>LANGUAGES</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Solidity</span>
+                        <span class="skill-tag">R</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>FRAMEWORKS & TOOLS</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">Angular</span>
+                        <span class="skill-tag">Vue.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Express</span>
+                        <span class="skill-tag">Django</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>WEB3 & BLOCKCHAIN</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag web3">Solidity</span>
+                        <span class="skill-tag web3">Smart Contracts</span>
+                        <span class="skill-tag web3">dApps</span>
+                        <span class="skill-tag web3">Ethereum</span>
+                        <span class="skill-tag web3">Web3.js</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <h2 class="section-title">
+                <span class="title-bracket">[</span> SERVICES <span class="title-bracket">]</span>
+            </h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>Web Development</h3>
+                    <p>Modern, performant and responsive websites with latest frontend/backend technologies.</p>
+                    <div class="price-tag">FROM $500</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🔗</div>
+                    <h3>Smart Contracts</h3>
+                    <p>Development and deployment of smart contracts on Ethereum and EVM-compatible chains.</p>
+                    <div class="price-tag">FROM $800</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>dApp Development</h3>
+                    <p>Full-stack decentralized applications with Web3 integration.</p>
+                    <div class="price-tag">FROM $1500</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Data Analysis</h3>
+                    <p>Data analysis and visualization with Python, SQL and R.</p>
+                    <div class="price-tag">FROM $400</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2 class="section-title">
+                <span class="title-bracket">[</span> CONTACT <span class="title-bracket">]</span>
+            </h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <a href="mailto:your@email.com">your@email.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        <a href="tel:+39123456789">+39 123 456 789</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">💬</span>
+                        <a href="#">Telegram</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🐦</span>
+                        <a href="#">Twitter/X</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">💼</span>
+                        <a href="#">LinkedIn</a>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📂</span>
+                        <a href="#">GitHub</a>
+                    </div>
+                </div>
+                
+                <div class="quote-form">
+                    <h3>REQUEST A QUOTE</h3>
+                    <form id="quoteForm">
+                        <input type="text" placeholder="Name" required>
+                        <input type="email" placeholder="Email" required>
+                        <select required>
+                            <option value="">Select a service</option>
+                            <option>Web Development</option>
+                            <option>Smart Contract</option>
+                            <option>dApp Development</option>
+                            <option>Data Analysis</option>
+                        </select>
+                        <textarea placeholder="Describe your project" rows="4"></textarea>
+                        <button type="submit" class="btn-primary">SEND REQUEST</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&lt;built_with_code /&gt; 2025 - All rights reserved</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
