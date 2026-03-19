@@ -3,201 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Portfolio</title>
+    <title>CYBERPUNK::DEV_PORTFOLIO</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Matrix canvas background -->
+    <!-- Cyberpunk Grid Background -->
+    <div class="cyber-grid"></div>
+    
+    <!-- Matrix Rain Canvas -->
     <canvas id="matrixCanvas"></canvas>
     
-    <!-- Initial overlay with logo -->
+    <!-- Scanning Line Effect -->
+    <div class="scanning-line"></div>
+    
+    <!-- Initial Overlay with Logo -->
     <div id="initialOverlay" class="overlay">
         <div class="logo-container">
-            <div class="logo">
-                <span class="logo-bracket">{</span>
-                <span class="logo-name">DEV</span>
-                <span class="logo-bracket">}</span>
+            <!-- Il tuo logo qui -->
+            <div class="cyber-logo">
+                <svg viewBox="0 0 200 200" class="logo-svg">
+                    <defs>
+                        <linearGradient id="neon-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#ff00ff;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#00ff00;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <rect x="20" y="20" width="160" height="160" 
+                          fill="none" 
+                          stroke="url(#neon-glow)" 
+                          stroke-width="4"
+                          filter="url(#glow)"/>
+                    <text x="100" y="120" 
+                          font-size="80" 
+                          text-anchor="middle" 
+                          fill="none" 
+                          stroke="url(#neon-glow)" 
+                          stroke-width="3"
+                          filter="url(#glow)">DEV</text>
+                </svg>
             </div>
-            <div class="logo-subtitle">INITIALIZING SYSTEM...</div>
+            <div class="logo-subtitle">
+                <span class="typing-text">SYSTEM BOOTING...</span>
+                <span class="cursor">_</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
         </div>
     </div>
 
-    <!-- Main content (initially hidden) -->
+    <!-- Main Content -->
     <div id="mainContent" class="main-content hidden">
-        <!-- Header with navigation -->
+        <!-- Header with neon navigation -->
         <header>
             <nav>
                 <div class="nav-logo">
-                    <span class="logo-bracket-small">{</span>
-                    <span class="logo-name-small">DEV</span>
-                    <span class="logo-bracket-small">}</span>
+                    <span class="neon-bracket">[</span>
+                    <span class="neon-text">DEV:://</span>
+                    <span class="neon-bracket">]</span>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#home" class="active">HOME</a></li>
-                    <li><a href="#skills">SKILLS</a></li>
-                    <li><a href="#services">SERVICES</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
+                    <li><a href="#home" class="neon-link" data-text="HOME">HOME</a></li>
+                    <li><a href="#skills" class="neon-link" data-text="SKILLS">SKILLS</a></li>
+                    <li><a href="#services" class="neon-link" data-text="SERVICES">SERVICES</a></li>
+                    <li><a href="#contact" class="neon-link" data-text="CONTACT">CONTACT</a></li>
                 </ul>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
             </nav>
         </header>
 
-        <!-- Home Section -->
+        <!-- Home Section - Cyberpunk Style -->
         <section id="home" class="section">
-            <div class="terminal-text">
-                <span class="prompt">$</span>
-                <span class="command">whoami</span>
+            <div class="hologram-container">
+                <div class="hologram-ring"></div>
+                <div class="hologram-text">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">></span>
+                        <span class="terminal-command">INITIALIZE_PROTOCOL</span>
+                    </div>
+                </div>
             </div>
-            <h1 class="glitch-title">
-                <span class="glitch-text">FULL-STACK</span>
-                <span class="glitch-text glow">DEVELOPER</span>
-            </h1>
-            <p class="bio">
-                Specialized in <span class="highlight">JavaScript/TypeScript</span>, 
-                <span class="highlight">Python</span>, <span class="highlight">SQL</span>.
-                Exploring the future with <span class="highlight-web3">Web3</span>, 
-                <span class="highlight-web3">Solidity</span> and 
-                <span class="highlight-web3">Smart Contracts</span>.
-            </p>
-            <div class="cta-buttons">
-                <button class="btn-primary" onclick="scrollToSection('contact')">
-                    ➜ REQUEST QUOTE
-                </button>
-                <button class="btn-secondary" onclick="scrollToSection('skills')">
-                    EXPLORE MY SKILLS
-                </button>
+
+            <div class="hero-content">
+                <div class="glitch-wrapper">
+                    <h1 class="cyber-title">
+                        <span class="cyber-title-line" data-text="FULL-STACK">FULL-STACK</span>
+                        <span class="cyber-title-line main" data-text="DEVELOPER">DEVELOPER</span>
+                    </h1>
+                </div>
+
+                <div class="cyber-bio">
+                    <p class="bio-text">
+                        <span class="bio-prefix">[SYSTEM]</span> Specialized in 
+                        <span class="neon-pink">JavaScript/TS</span>, 
+                        <span class="neon-blue">Python</span>, 
+                        <span class="neon-green">SQL</span>
+                    </p>
+                    <p class="bio-text web3-text">
+                        <span class="bio-prefix">[WEB3_MODULE]</span> Exploring the future with 
+                        <span class="neon-purple">Solidity</span>, 
+                        <span class="neon-purple">Smart Contracts</span> & 
+                        <span class="neon-purple">dApps</span>
+                    </p>
+                </div>
+
+                <div class="cyber-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">5+</span>
+                        <span class="stat-label">Years Code</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">50+</span>
+                        <span class="stat-label">Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">24/7</span>
+                        <span class="stat-label">Available</span>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <button class="cyber-button primary" onclick="scrollToSection('contact')">
+                        <span class="button-text">REQUEST_QUOTE</span>
+                        <span class="button-glitch"></span>
+                    </button>
+                    <button class="cyber-button secondary" onclick="scrollToSection('skills')">
+                        <span class="button-text">SCAN_SKILLS</span>
+                        <span class="button-glitch"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cyber-decoration">
+                <div class="corner-tl"></div>
+                <div class="corner-tr"></div>
+                <div class="corner-bl"></div>
+                <div class="corner-br"></div>
             </div>
         </section>
 
-        <!-- Skills Section -->
+        <!-- Skills Section - Cyberpunk Grid -->
         <section id="skills" class="section">
             <h2 class="section-title">
-                <span class="title-bracket">[</span> SKILLS <span class="title-bracket">]</span>
+                <span class="title-bracket">[</span>
+                <span class="title-text">SKILL_MATRIX</span>
+                <span class="title-bracket">]</span>
             </h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>LANGUAGES</h3>
-                    <div class="skill-items">
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">TypeScript</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS3</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">SQL</span>
-                        <span class="skill-tag">Solidity</span>
-                        <span class="skill-tag">R</span>
+
+            <div class="skills-hologrid">
+                <div class="skill-node" data-skill="js">
+                    <div class="node-glow"></div>
+                    <div class="node-icon">JS</div>
+                    <div class="node-level" style="--level: 90%"></div>
+                </div>
+                <div class="skill-node" data-skill="ts">
+                    <div class="node-glow"></div>
+                    <div class="node-icon">TS</div>
+                    <div class="node-level" style="--level: 85%"></div>
+                </div>
+                <div class="skill-node" data-skill="python">
+                    <div class="node-glow"></div>
+                    <div class="node-icon">PY</div>
+                    <div class="node-level" style="--level: 80%"></div>
+                </div>
+                <div class="skill-node" data-skill="solidity">
+                    <div class="node-glow"></div>
+                    <div class="node-icon">SOL</div>
+                    <div class="node-level" style="--level: 70%"></div>
+                </div>
+            </div>
+
+            <div class="skills-categories">
+                <div class="skill-category cyber-card">
+                    <h3 class="category-title">
+                        <span class="bracket">{</span> LANGUAGES <span class="bracket">}</span>
+                    </h3>
+                    <div class="skill-tags">
+                        <span class="cyber-tag" data-tag="javascript">JavaScript</span>
+                        <span class="cyber-tag" data-tag="typescript">TypeScript</span>
+                        <span class="cyber-tag" data-tag="html">HTML5</span>
+                        <span class="cyber-tag" data-tag="css">CSS3</span>
+                        <span class="cyber-tag" data-tag="python">Python</span>
+                        <span class="cyber-tag" data-tag="sql">SQL</span>
+                        <span class="cyber-tag" data-tag="solidity">Solidity</span>
+                        <span class="cyber-tag" data-tag="r">R</span>
                     </div>
                 </div>
-                <div class="skill-category">
-                    <h3>FRAMEWORKS & TOOLS</h3>
-                    <div class="skill-items">
-                        <span class="skill-tag">Angular</span>
-                        <span class="skill-tag">Vue.js</span>
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Express</span>
-                        <span class="skill-tag">Django</span>
+
+                <div class="skill-category cyber-card">
+                    <h3 class="category-title">
+                        <span class="bracket">[</span> FRAMEWORKS <span class="bracket">]</span>
+                    </h3>
+                    <div class="skill-tags">
+                        <span class="cyber-tag" data-tag="angular">Angular</span>
+                        <span class="cyber-tag" data-tag="vue">Vue.js</span>
+                        <span class="cyber-tag" data-tag="node">Node.js</span>
+                        <span class="cyber-tag" data-tag="express">Express</span>
+                        <span class="cyber-tag" data-tag="django">Django</span>
                     </div>
                 </div>
-                <div class="skill-category">
-                    <h3>WEB3 & BLOCKCHAIN</h3>
-                    <div class="skill-items">
-                        <span class="skill-tag web3">Solidity</span>
-                        <span class="skill-tag web3">Smart Contracts</span>
-                        <span class="skill-tag web3">dApps</span>
-                        <span class="skill-tag web3">Ethereum</span>
-                        <span class="skill-tag web3">Web3.js</span>
+
+                <div class="skill-category cyber-card web3-card">
+                    <h3 class="category-title">
+                        <span class="bracket">〈</span> WEB3 <span class="bracket">〉</span>
+                    </h3>
+                    <div class="skill-tags">
+                        <span class="cyber-tag web3-tag" data-tag="solidity">Solidity</span>
+                        <span class="cyber-tag web3-tag" data-tag="contracts">Smart Contracts</span>
+                        <span class="cyber-tag web3-tag" data-tag="dapps">dApps</span>
+                        <span class="cyber-tag web3-tag" data-tag="ethereum">Ethereum</span>
+                        <span class="cyber-tag web3-tag" data-tag="web3">Web3.js</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Services Section -->
+        <!-- Services Section - Neon Cards -->
         <section id="services" class="section">
             <h2 class="section-title">
-                <span class="title-bracket">[</span> SERVICES <span class="title-bracket">]</span>
+                <span class="title-bracket">〈</span>
+                <span class="title-text">SERVICES</span>
+                <span class="title-bracket">〉</span>
             </h2>
+
             <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">⚡</div>
-                    <h3>Web Development</h3>
-                    <p>Modern, performant and responsive websites with latest frontend/backend technologies.</p>
-                    <div class="price-tag">FROM $500</div>
+                <div class="service-card cyber-card" data-service="web">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <span class="service-icon">⚡</span>
+                        <span class="service-code">[WEB_DEV]</span>
+                    </div>
+                    <h3 class="service-title">Web Development</h3>
+                    <p class="service-description">Modern, performant and responsive websites with cutting-edge tech</p>
+                    <div class="service-price">
+                        <span class="price-currency">$</span>
+                        <span class="price-value">500</span>
+                        <span class="price-period">/start</span>
+                    </div>
+                    <div class="service-features">
+                        <span class="feature">⚡ React/Vue/Angular</span>
+                        <span class="feature">🔧 Node.js/Python</span>
+                        <span class="feature">📱 Responsive</span>
+                    </div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">🔗</div>
-                    <h3>Smart Contracts</h3>
-                    <p>Development and deployment of smart contracts on Ethereum and EVM-compatible chains.</p>
-                    <div class="price-tag">FROM $800</div>
+
+                <div class="service-card cyber-card" data-service="smartcontracts">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <span class="service-icon">🔗</span>
+                        <span class="service-code">[SMART_CONTRACTS]</span>
+                    </div>
+                    <h3 class="service-title">Smart Contracts</h3>
+                    <p class="service-description">Secure and optimized contracts on Ethereum & EVM chains</p>
+                    <div class="service-price">
+                        <span class="price-currency">$</span>
+                        <span class="price-value">800</span>
+                        <span class="price-period">/contract</span>
+                    </div>
+                    <div class="service-features">
+                        <span class="feature">🔐 Solidity</span>
+                        <span class="feature">⚙️ Hardhat/Truffle</span>
+                        <span class="feature">✅ Audited</span>
+                    </div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">📱</div>
-                    <h3>dApp Development</h3>
-                    <p>Full-stack decentralized applications with Web3 integration.</p>
-                    <div class="price-tag">FROM $1500</div>
+
+                <div class="service-card cyber-card" data-service="dapps">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <span class="service-icon">📱</span>
+                        <span class="service-code">[DAPPS]</span>
+                    </div>
+                    <h3 class="service-title">dApp Development</h3>
+                    <p class="service-description">Full-stack decentralized applications with Web3 integration</p>
+                    <div class="service-price">
+                        <span class="price-currency">$</span>
+                        <span class="price-value">1500</span>
+                        <span class="price-period">/project</span>
+                    </div>
+                    <div class="service-features">
+                        <span class="feature">🌐 Web3.js/Ethers</span>
+                        <span class="feature">🎨 Frontend</span>
+                        <span class="feature">🔗 Blockchain</span>
+                    </div>
                 </div>
-                <div class="service-card">
-                    <div class="service-icon">📊</div>
-                    <h3>Data Analysis</h3>
-                    <p>Data analysis and visualization with Python, SQL and R.</p>
-                    <div class="price-tag">FROM $400</div>
+
+                <div class="service-card cyber-card" data-service="data">
+                    <div class="card-glow"></div>
+                    <div class="card-header">
+                        <span class="service-icon">📊</span>
+                        <span class="service-code">[DATA_ANALYSIS]</span>
+                    </div>
+                    <h3 class="service-title">Data Analysis</h3>
+                    <p class="service-description">Insights and visualization with Python, SQL and R</p>
+                    <div class="service-price">
+                        <span class="price-currency">$</span>
+                        <span class="price-value">400</span>
+                        <span class="price-period">/analysis</span>
+                    </div>
+                    <div class="service-features">
+                        <span class="feature">🐍 Python</span>
+                        <span class="feature">📈 R</span>
+                        <span class="feature">📊 SQL</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Contact Section - Cyberpunk Terminal -->
         <section id="contact" class="section">
             <h2 class="section-title">
-                <span class="title-bracket">[</span> CONTACT <span class="title-bracket">]</span>
+                <span class="title-bracket">[</span>
+                <span class="title-text">CONNECT</span>
+                <span class="title-bracket">]</span>
             </h2>
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <span class="contact-icon">📧</span>
-                        <a href="mailto:your@email.com">your@email.com</a>
+
+            <div class="contact-grid">
+                <div class="contact-terminal cyber-card">
+                    <div class="terminal-header">
+                        <span class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </span>
+                        <span class="terminal-title">contact@dev:~$</span>
                     </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📱</span>
-                        <a href="tel:+39123456789">+39 123 456 789</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">💬</span>
-                        <a href="#">Telegram</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">🐦</span>
-                        <a href="#">Twitter/X</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">💼</span>
-                        <a href="#">LinkedIn</a>
-                    </div>
-                    <div class="contact-item">
-                        <span class="contact-icon">📂</span>
-                        <a href="#">GitHub</a>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="prompt">$></span>
+                            <span class="command">--initialize_contact</span>
+                        </div>
+                        <div class="contact-channels">
+                            <a href="#" class="channel">
+                                <span class="channel-icon">📧</span>
+                                <span class="channel-name">email</span>
+                                <span class="channel-value">dev@cyber.space</span>
+                            </a>
+                            <a href="#" class="channel">
+                                <span class="channel-icon">📱</span>
+                                <span class="channel-name">phone</span>
+                                <span class="channel-value">+39 123 456 789</span>
+                            </a>
+                            <a href="#" class="channel">
+                                <span class="channel-icon">💬</span>
+                                <span class="channel-name">telegram</span>
+                                <span class="channel-value">@cyber_dev</span>
+                            </a>
+                            <a href="#" class="channel">
+                                <span class="channel-icon">🐦</span>
+                                <span class="channel-name">x</span>
+                                <span class="channel-value">@dev_cyber</span>
+                            </a>
+                            <a href="#" class="channel">
+                                <span class="channel-icon">💼</span>
+                                <span class="channel-name">linkedin</span>
+                                <span class="channel-value">/in/cyberdev</span>
+                            </a>
+                            <a href="#" class="channel">
+                                <span class="channel-icon">📂</span>
+                                <span class="channel-name">github</span>
+                                <span class="channel-value">/cyber-dev</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="quote-form">
-                    <h3>REQUEST A QUOTE</h3>
-                    <form id="quoteForm">
-                        <input type="text" placeholder="Name" required>
-                        <input type="email" placeholder="Email" required>
-                        <select required>
-                            <option value="">Select a service</option>
-                            <option>Web Development</option>
-                            <option>Smart Contract</option>
-                            <option>dApp Development</option>
-                            <option>Data Analysis</option>
-                        </select>
-                        <textarea placeholder="Describe your project" rows="4"></textarea>
-                        <button type="submit" class="btn-primary">SEND REQUEST</button>
-                    </form>
+
+                <div class="quote-terminal cyber-card">
+                    <div class="terminal-header">
+                        <span class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </span>
+                        <span class="terminal-title">quote@dev:~$</span>
+                    </div>
+                    <div class="terminal-body">
+                        <form id="quoteForm" class="cyber-form">
+                            <div class="form-field">
+                                <label for="name" class="field-label">>_ name:</label>
+                                <input type="text" id="name" class="cyber-input" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="email" class="field-label">>_ email:</label>
+                                <input type="email" id="email" class="cyber-input" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="service" class="field-label">>_ service:</label>
+                                <select id="service" class="cyber-select" required>
+                                    <option value="">Select service</option>
+                                    <option>Web Development</option>
+                                    <option>Smart Contract</option>
+                                    <option>dApp Development</option>
+                                    <option>Data Analysis</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="message" class="field-label">>_ message:</label>
+                                <textarea id="message" class="cyber-textarea" placeholder="Describe your project..." rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="cyber-button submit">
+                                <span class="button-text">SEND_MESSAGE</span>
+                                <span class="button-glitch"></span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer>
-            <p>&lt;built_with_code /&gt; 2025 - All rights reserved</p>
+        <footer class="cyber-footer">
+            <div class="footer-content">
+                <span class="footer-code">&lt;cyber_dev/&gt;</span>
+                <span class="footer-divider">||</span>
+                <span class="footer-copy">2025 // ALL RIGHTS RESERVED</span>
+                <span class="footer-divider">||</span>
+                <span class="footer-version">v2.0.1 [CYBERPUNK]</span>
+            </div>
         </footer>
     </div>
 
