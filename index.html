@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="nutmeg.dev - Cyberpunk Full-Stack Developer specializing in Web3, Smart Contracts, and dApps">
+    <meta name="author" content="nutmeg.dev">
     <title>nutmeg.dev | Cyberpunk Developer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -117,12 +119,12 @@
                     </div>
                     
                     <div class="hero-actions">
-                        <button class="cyber-btn primary" id="exploreBtn">
+                        <button class="cyber-btn primary" id="exploreBtn" type="button">
                             <span class="btn-text">EXPLORE REALITY</span>
                             <span class="btn-icon">→</span>
                             <span class="btn-glitch"></span>
                         </button>
-                        <button class="cyber-btn secondary" id="contactBtn">
+                        <button class="cyber-btn secondary" id="contactBtn" type="button">
                             <span class="btn-text">CONNECT NOW</span>
                             <span class="btn-icon">⚡</span>
                             <span class="btn-glitch"></span>
@@ -649,19 +651,19 @@
                         
                         <form id="cyberForm" class="cyber-form">
                             <div class="form-field">
-                                <input type="text" id="formName" placeholder=" " required>
+                                <input type="text" id="formName" name="name" placeholder=" " required>
                                 <label for="formName">IDENTITY</label>
                                 <div class="field-border"></div>
                             </div>
                             
                             <div class="form-field">
-                                <input type="email" id="formEmail" placeholder=" " required>
+                                <input type="email" id="formEmail" name="email" placeholder=" " required>
                                 <label for="formEmail">COMM LINK</label>
                                 <div class="field-border"></div>
                             </div>
                             
                             <div class="form-field">
-                                <select id="formService" required>
+                                <select id="formService" name="service" required>
                                     <option value="" disabled selected></option>
                                     <option>Web Development</option>
                                     <option>Smart Contract</option>
@@ -673,7 +675,7 @@
                             </div>
                             
                             <div class="form-field">
-                                <textarea id="formMessage" rows="4" placeholder=" " required></textarea>
+                                <textarea id="formMessage" name="message" rows="4" placeholder=" " required></textarea>
                                 <label for="formMessage">MESSAGE ENCRYPTED</label>
                                 <div class="field-border"></div>
                             </div>
@@ -719,7 +721,7 @@
     <div id="easterEggConsole" class="easter-egg-console hidden">
         <div class="console-header">
             <span>DEVELOPER CONSOLE [ACCESS GRANTED]</span>
-            <button class="console-close">✕</button>
+            <button class="console-close" type="button">✕</button>
         </div>
         <div class="console-body">
             <div class="console-output">
