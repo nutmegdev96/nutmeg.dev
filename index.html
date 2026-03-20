@@ -2,437 +2,737 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBERPUNK::DEV_PORTFOLIO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>nutmeg.dev | Cyberpunk Developer</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Cyberpunk Grid Background -->
-    <div class="cyber-grid"></div>
-    
     <!-- Matrix Rain Canvas -->
     <canvas id="matrixCanvas"></canvas>
     
-    <!-- Scanning Line Effect -->
-    <div class="scanning-line"></div>
+    <!-- Scanlines Overlay -->
+    <div class="scanlines"></div>
     
-    <!-- Initial Overlay with Logo -->
-    <div id="initialOverlay" class="overlay">
-        <div class="logo-container">
-            <!-- Il tuo logo qui -->
-            <div class="cyber-logo">
-                <svg viewBox="0 0 200 200" class="logo-svg">
-                    <defs>
-                        <linearGradient id="neon-glow" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00ffff;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#ff00ff;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#00ff00;stop-opacity:1" />
-                        </linearGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <rect x="20" y="20" width="160" height="160" 
-                          fill="none" 
-                          stroke="url(#neon-glow)" 
-                          stroke-width="4"
-                          filter="url(#glow)"/>
-                    <text x="100" y="120" 
-                          font-size="80" 
-                          text-anchor="middle" 
-                          fill="none" 
-                          stroke="url(#neon-glow)" 
-                          stroke-width="3"
-                          filter="url(#glow)">DEV</text>
-                </svg>
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <span class="bracket neon-green">&lt;</span>
+                <span class="logo-text glitch" data-text="nutmeg.dev">nutmeg.dev</span>
+                <span class="bracket neon-green">/&gt;</span>
             </div>
-            <div class="logo-subtitle">
-                <span class="typing-text">SYSTEM BOOTING...</span>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-text">
+                <span class="loading-prompt">$></span>
+                <span class="loading-message">INITIALIZING SYSTEM...</span>
                 <span class="cursor">_</span>
             </div>
-            <div class="progress-bar">
-                <div class="progress-fill"></div>
-            </div>
+            <div class="loading-progress">0%</div>
         </div>
     </div>
-
+    
     <!-- Main Content -->
     <div id="mainContent" class="main-content hidden">
-        <!-- Header with neon navigation -->
-        <header>
-            <nav>
+        <!-- Navigation HUD -->
+        <nav class="nav-hud">
+            <div class="nav-container">
                 <div class="nav-logo">
-                    <span class="neon-bracket">[</span>
-                    <span class="neon-text">DEV:://</span>
-                    <span class="neon-bracket">]</span>
+                    <span class="bracket neon-green">[</span>
+                    <span class="logo-main">nutmeg</span>
+                    <span class="logo-dot neon-pink">.</span>
+                    <span class="logo-main">dev</span>
+                    <span class="bracket neon-green">]</span>
                 </div>
-                <ul class="nav-links">
-                    <li><a href="#home" class="neon-link" data-text="HOME">HOME</a></li>
-                    <li><a href="#skills" class="neon-link" data-text="SKILLS">SKILLS</a></li>
-                    <li><a href="#services" class="neon-link" data-text="SERVICES">SERVICES</a></li>
-                    <li><a href="#contact" class="neon-link" data-text="CONTACT">CONTACT</a></li>
-                </ul>
-                <div class="status-indicator">
-                    <span class="status-dot"></span>
+                
+                <div class="nav-links">
+                    <a href="#home" class="nav-link" data-section="home">
+                        <span class="nav-bracket">&lt;</span>
+                        <span class="nav-text">HOME</span>
+                        <span class="nav-bracket">/&gt;</span>
+                    </a>
+                    <a href="#about" class="nav-link" data-section="about">
+                        <span class="nav-bracket">&lt;</span>
+                        <span class="nav-text">ABOUT</span>
+                        <span class="nav-bracket">/&gt;</span>
+                    </a>
+                    <a href="#services" class="nav-link" data-section="services">
+                        <span class="nav-bracket">&lt;</span>
+                        <span class="nav-text">SERVICES</span>
+                        <span class="nav-bracket">/&gt;</span>
+                    </a>
+                    <a href="#skills" class="nav-link" data-section="skills">
+                        <span class="nav-bracket">&lt;</span>
+                        <span class="nav-text">SKILLS</span>
+                        <span class="nav-bracket">/&gt;</span>
+                    </a>
+                    <a href="#contact" class="nav-link" data-section="contact">
+                        <span class="nav-bracket">&lt;</span>
+                        <span class="nav-text">CONTACT</span>
+                        <span class="nav-bracket">/&gt;</span>
+                    </a>
+                </div>
+                
+                <div class="nav-status">
+                    <div class="status-led"></div>
                     <span class="status-text">SYSTEM ONLINE</span>
                 </div>
-            </nav>
-        </header>
-
-        <!-- Home Section - Cyberpunk Style -->
-        <section id="home" class="section">
-            <div class="hologram-container">
-                <div class="hologram-ring"></div>
-                <div class="hologram-text">
-                    <div class="terminal-line">
-                        <span class="terminal-prompt">></span>
-                        <span class="terminal-command">INITIALIZE_PROTOCOL</span>
-                    </div>
-                </div>
             </div>
-
-            <div class="hero-content">
-                <div class="glitch-wrapper">
-                    <h1 class="cyber-title">
-                        <span class="cyber-title-line" data-text="FULL-STACK">FULL-STACK</span>
-                        <span class="cyber-title-line main" data-text="DEVELOPER">DEVELOPER</span>
+        </nav>
+        
+        <!-- Hero Section -->
+        <section id="home" class="section hero">
+            <div class="hero-container">
+                <div class="hero-content-centered">
+                    <h1 class="hero-title">
+                        <span class="title-line glitch-text" data-text="PUSHING">PUSHING</span>
+                        <span class="title-line glitch-text" data-text="THE LIMITS">THE LIMITS</span>
+                        <span class="title-line glitch-text highlight" data-text="OF POSSIBILITY">OF POSSIBILITY</span>
                     </h1>
-                </div>
-
-                <div class="cyber-bio">
-                    <p class="bio-text">
-                        <span class="bio-prefix">[SYSTEM]</span> Specialized in 
-                        <span class="neon-pink">JavaScript/TS</span>, 
-                        <span class="neon-blue">Python</span>, 
-                        <span class="neon-green">SQL</span>
+                    
+                    <p class="hero-description">
+                        <span class="neon-cyan">Full‑Stack Architect</span> | 
+                        <span class="neon-purple">Web3 Pioneer</span> | 
+                        <span class="neon-pink">Digital Alchemist</span>
                     </p>
-                    <p class="bio-text web3-text">
-                        <span class="bio-prefix">[WEB3_MODULE]</span> Exploring the future with 
-                        <span class="neon-purple">Solidity</span>, 
-                        <span class="neon-purple">Smart Contracts</span> & 
-                        <span class="neon-purple">dApps</span>
-                    </p>
-                </div>
-
-                <div class="cyber-stats">
-                    <div class="stat-item">
-                        <span class="stat-value">5+</span>
-                        <span class="stat-label">Years Code</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value">50+</span>
-                        <span class="stat-label">Projects</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value">24/7</span>
-                        <span class="stat-label">Available</span>
-                    </div>
-                </div>
-
-                <div class="cta-buttons">
-                    <button class="cyber-button primary" onclick="scrollToSection('contact')">
-                        <span class="button-text">REQUEST_QUOTE</span>
-                        <span class="button-glitch"></span>
-                    </button>
-                    <button class="cyber-button secondary" onclick="scrollToSection('skills')">
-                        <span class="button-text">SCAN_SKILLS</span>
-                        <span class="button-glitch"></span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="cyber-decoration">
-                <div class="corner-tl"></div>
-                <div class="corner-tr"></div>
-                <div class="corner-bl"></div>
-                <div class="corner-br"></div>
-            </div>
-        </section>
-
-        <!-- Skills Section - Cyberpunk Grid -->
-        <section id="skills" class="section">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                <span class="title-text">SKILL_MATRIX</span>
-                <span class="title-bracket">]</span>
-            </h2>
-
-            <div class="skills-hologrid">
-                <div class="skill-node" data-skill="js">
-                    <div class="node-glow"></div>
-                    <div class="node-icon">JS</div>
-                    <div class="node-level" style="--level: 90%"></div>
-                </div>
-                <div class="skill-node" data-skill="ts">
-                    <div class="node-glow"></div>
-                    <div class="node-icon">TS</div>
-                    <div class="node-level" style="--level: 85%"></div>
-                </div>
-                <div class="skill-node" data-skill="python">
-                    <div class="node-glow"></div>
-                    <div class="node-icon">PY</div>
-                    <div class="node-level" style="--level: 80%"></div>
-                </div>
-                <div class="skill-node" data-skill="solidity">
-                    <div class="node-glow"></div>
-                    <div class="node-icon">SOL</div>
-                    <div class="node-level" style="--level: 70%"></div>
-                </div>
-            </div>
-
-            <div class="skills-categories">
-                <div class="skill-category cyber-card">
-                    <h3 class="category-title">
-                        <span class="bracket">{</span> LANGUAGES <span class="bracket">}</span>
-                    </h3>
-                    <div class="skill-tags">
-                        <span class="cyber-tag" data-tag="javascript">JavaScript</span>
-                        <span class="cyber-tag" data-tag="typescript">TypeScript</span>
-                        <span class="cyber-tag" data-tag="html">HTML5</span>
-                        <span class="cyber-tag" data-tag="css">CSS3</span>
-                        <span class="cyber-tag" data-tag="python">Python</span>
-                        <span class="cyber-tag" data-tag="sql">SQL</span>
-                        <span class="cyber-tag" data-tag="solidity">Solidity</span>
-                        <span class="cyber-tag" data-tag="r">R</span>
-                    </div>
-                </div>
-
-                <div class="skill-category cyber-card">
-                    <h3 class="category-title">
-                        <span class="bracket">[</span> FRAMEWORKS <span class="bracket">]</span>
-                    </h3>
-                    <div class="skill-tags">
-                        <span class="cyber-tag" data-tag="angular">Angular</span>
-                        <span class="cyber-tag" data-tag="vue">Vue.js</span>
-                        <span class="cyber-tag" data-tag="node">Node.js</span>
-                        <span class="cyber-tag" data-tag="express">Express</span>
-                        <span class="cyber-tag" data-tag="django">Django</span>
-                    </div>
-                </div>
-
-                <div class="skill-category cyber-card web3-card">
-                    <h3 class="category-title">
-                        <span class="bracket">〈</span> WEB3 <span class="bracket">〉</span>
-                    </h3>
-                    <div class="skill-tags">
-                        <span class="cyber-tag web3-tag" data-tag="solidity">Solidity</span>
-                        <span class="cyber-tag web3-tag" data-tag="contracts">Smart Contracts</span>
-                        <span class="cyber-tag web3-tag" data-tag="dapps">dApps</span>
-                        <span class="cyber-tag web3-tag" data-tag="ethereum">Ethereum</span>
-                        <span class="cyber-tag web3-tag" data-tag="web3">Web3.js</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section - Neon Cards -->
-        <section id="services" class="section">
-            <h2 class="section-title">
-                <span class="title-bracket">〈</span>
-                <span class="title-text">SERVICES</span>
-                <span class="title-bracket">〉</span>
-            </h2>
-
-            <div class="services-grid">
-                <div class="service-card cyber-card" data-service="web">
-                    <div class="card-glow"></div>
-                    <div class="card-header">
-                        <span class="service-icon">⚡</span>
-                        <span class="service-code">[WEB_DEV]</span>
-                    </div>
-                    <h3 class="service-title">Web Development</h3>
-                    <p class="service-description">Modern, performant and responsive websites with cutting-edge tech</p>
-                    <div class="service-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-value">500</span>
-                        <span class="price-period">/start</span>
-                    </div>
-                    <div class="service-features">
-                        <span class="feature">⚡ React/Vue/Angular</span>
-                        <span class="feature">🔧 Node.js/Python</span>
-                        <span class="feature">📱 Responsive</span>
-                    </div>
-                </div>
-
-                <div class="service-card cyber-card" data-service="smartcontracts">
-                    <div class="card-glow"></div>
-                    <div class="card-header">
-                        <span class="service-icon">🔗</span>
-                        <span class="service-code">[SMART_CONTRACTS]</span>
-                    </div>
-                    <h3 class="service-title">Smart Contracts</h3>
-                    <p class="service-description">Secure and optimized contracts on Ethereum & EVM chains</p>
-                    <div class="service-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-value">800</span>
-                        <span class="price-period">/contract</span>
-                    </div>
-                    <div class="service-features">
-                        <span class="feature">🔐 Solidity</span>
-                        <span class="feature">⚙️ Hardhat/Truffle</span>
-                        <span class="feature">✅ Audited</span>
-                    </div>
-                </div>
-
-                <div class="service-card cyber-card" data-service="dapps">
-                    <div class="card-glow"></div>
-                    <div class="card-header">
-                        <span class="service-icon">📱</span>
-                        <span class="service-code">[DAPPS]</span>
-                    </div>
-                    <h3 class="service-title">dApp Development</h3>
-                    <p class="service-description">Full-stack decentralized applications with Web3 integration</p>
-                    <div class="service-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-value">1500</span>
-                        <span class="price-period">/project</span>
-                    </div>
-                    <div class="service-features">
-                        <span class="feature">🌐 Web3.js/Ethers</span>
-                        <span class="feature">🎨 Frontend</span>
-                        <span class="feature">🔗 Blockchain</span>
-                    </div>
-                </div>
-
-                <div class="service-card cyber-card" data-service="data">
-                    <div class="card-glow"></div>
-                    <div class="card-header">
-                        <span class="service-icon">📊</span>
-                        <span class="service-code">[DATA_ANALYSIS]</span>
-                    </div>
-                    <h3 class="service-title">Data Analysis</h3>
-                    <p class="service-description">Insights and visualization with Python, SQL and R</p>
-                    <div class="service-price">
-                        <span class="price-currency">$</span>
-                        <span class="price-value">400</span>
-                        <span class="price-period">/analysis</span>
-                    </div>
-                    <div class="service-features">
-                        <span class="feature">🐍 Python</span>
-                        <span class="feature">📈 R</span>
-                        <span class="feature">📊 SQL</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section - Cyberpunk Terminal -->
-        <section id="contact" class="section">
-            <h2 class="section-title">
-                <span class="title-bracket">[</span>
-                <span class="title-text">CONNECT</span>
-                <span class="title-bracket">]</span>
-            </h2>
-
-            <div class="contact-grid">
-                <div class="contact-terminal cyber-card">
-                    <div class="terminal-header">
-                        <span class="terminal-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </span>
-                        <span class="terminal-title">contact@dev:~$</span>
-                    </div>
-                    <div class="terminal-body">
-                        <div class="terminal-line">
-                            <span class="prompt">$></span>
-                            <span class="command">--initialize_contact</span>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" data-count="2">0</span>
+                            <span class="stat-label">Years Experience</span>
                         </div>
-                        <div class="contact-channels">
-                            <a href="#" class="channel">
-                                <span class="channel-icon">📧</span>
-                                <span class="channel-name">email</span>
-                                <span class="channel-value">dev@cyber.space</span>
-                            </a>
-                            <a href="#" class="channel">
-                                <span class="channel-icon">📱</span>
-                                <span class="channel-name">phone</span>
-                                <span class="channel-value">+39 123 456 789</span>
-                            </a>
-                            <a href="#" class="channel">
-                                <span class="channel-icon">💬</span>
-                                <span class="channel-name">telegram</span>
-                                <span class="channel-value">@cyber_dev</span>
-                            </a>
-                            <a href="#" class="channel">
-                                <span class="channel-icon">🐦</span>
-                                <span class="channel-name">x</span>
-                                <span class="channel-value">@dev_cyber</span>
-                            </a>
-                            <a href="#" class="channel">
-                                <span class="channel-icon">💼</span>
-                                <span class="channel-name">linkedin</span>
-                                <span class="channel-value">/in/cyberdev</span>
-                            </a>
-                            <a href="#" class="channel">
-                                <span class="channel-icon">📂</span>
-                                <span class="channel-name">github</span>
-                                <span class="channel-value">/cyber-dev</span>
-                            </a>
+                        <div class="stat-item">
+                            <span class="stat-value" data-count="50">0</span>
+                            <span class="stat-label">Projects Deployed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" data-count="24">0</span>
+                            <span class="stat-label">/7 Availability</span>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <button class="cyber-btn primary" id="exploreBtn">
+                            <span class="btn-text">EXPLORE REALITY</span>
+                            <span class="btn-icon">→</span>
+                            <span class="btn-glitch"></span>
+                        </button>
+                        <button class="cyber-btn secondary" id="contactBtn">
+                            <span class="btn-text">CONNECT NOW</span>
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-glitch"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scroll-indicator">
+                <span class="scroll-text">SCROLL</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+        
+        <!-- About Section -->
+        <section id="about" class="section about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-content">
+                        <div class="section-badge">
+                            <span class="badge-bracket">[</span>
+                            <span>SYSTEM.IDENTITY</span>
+                            <span class="badge-bracket">]</span>
+                        </div>
+                        
+                        <h2 class="section-title">
+                            <span class="glitch-text-sm" data-text="// WHO AM I">// WHO AM I</span>
+                        </h2>
+                        
+                        <div class="about-text">
+                            <p class="glow-text">I'm <span class="neon-green">nutmeg</span>, a developer who doesn't just write code — <span class="neon-cyan">I engineer digital realities</span>.</p>
+                            <p>With <span class="highlight">2 years of experience</span> across the full spectrum of development, I've built systems that handle thousands of requests, crafted interfaces that users can't stop interacting with, and architected solutions that push the boundaries of what's possible in web3.</p>
+                            <p>My approach combines <span class="neon-purple">mathematical precision</span> with <span class="neon-pink">creative chaos</span>. I don't just solve problems — I find elegant, futuristic solutions that anticipate tomorrow's challenges.</p>
+                            <p class="quote">"Code is my canvas. The web is my medium. The future is my deadline."</p>
+                        </div>
+                        
+                        <div class="about-tech">
+                            <span class="tech-tag">#FULLSTACK</span>
+                            <span class="tech-tag">#WEB3</span>
+                            <span class="tech-tag">#DEFI</span>
+                            <span class="tech-tag">#SMART_CONTRACTS</span>
+                            <span class="tech-tag">#AI_INTEGRATION</span>
+                        </div>
+                    </div>
+                    
+                    <div class="about-terminal">
+                        <div class="terminal-window mini">
+                            <div class="terminal-header">
+                                <span class="terminal-title">developer@nutmeg:~$</span>
+                            </div>
+                            <div class="terminal-body">
+                                <div class="terminal-line">
+                                    <span class="prompt">$></span>
+                                    <span>cat about.md</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="comment"># nutmeg.dev profile</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span>name: "NUTMEG"</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span>role: "Full Stack Developer"</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span>expertise: ["Web3", "dApps", "Smart Contracts", "DeFi"]</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span>experience: "2 years"</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span>philosophy: "Build for the future, ship today"</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="quote-terminal cyber-card">
-                    <div class="terminal-header">
-                        <span class="terminal-dots">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </span>
-                        <span class="terminal-title">quote@dev:~$</span>
+            </div>
+        </section>
+        
+        <!-- Services Section - 2 cards per row -->
+        <section id="services" class="section services">
+            <div class="container">
+                <div class="section-badge centered">
+                    <span class="badge-bracket">[</span>
+                    <span>SERVICES.MATRIX</span>
+                    <span class="badge-bracket">]</span>
+                </div>
+                
+                <h2 class="section-title centered">
+                    <span class="glitch-text-sm" data-text="// WHAT I OFFER">// WHAT I OFFER</span>
+                </h2>
+                
+                <div class="services-grid two-columns" id="servicesGrid">
+                    <!-- Service 1 - Web Development -->
+                    <div class="service-card-3d" data-service="web">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🌐</div>
+                                <h3 class="card-title">Web Development</h3>
+                                <div class="card-price">
+                                    <span class="price-currency">$</span>
+                                    <span class="price-value">250</span>
+                                    <span class="price-period">/start</span>
+                                </div>
+                                <div class="card-features">
+                                    <span>⚡ Modern Frameworks</span>
+                                    <span>📱 Responsive Design</span>
+                                    <span>🚀 Performance Optimized</span>
+                                </div>
+                                <div class="card-badge">-50% OFF</div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <div class="back-icon">⚡</div>
+                                    <p>Full-stack web applications with cutting-edge technologies. From concept to deployment in record time.</p>
+                                    <div class="back-tech">
+                                        <span>React</span>
+                                        <span>Vue</span>
+                                        <span>Angular</span>
+                                        <span>Node</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="terminal-body">
-                        <form id="quoteForm" class="cyber-form">
-                            <div class="form-field">
-                                <label for="name" class="field-label">>_ name:</label>
-                                <input type="text" id="name" class="cyber-input" placeholder="Enter your name" required>
+                    
+                    <!-- Service 2 - Smart Contracts -->
+                    <div class="service-card-3d" data-service="contracts">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">🔗</div>
+                                <h3 class="card-title">Smart Contracts</h3>
+                                <div class="card-price">
+                                    <span class="price-currency">$</span>
+                                    <span class="price-value">400</span>
+                                    <span class="price-period">/contract</span>
+                                </div>
+                                <div class="card-features">
+                                    <span>🔐 Secure & Audited</span>
+                                    <span>⚙️ Optimized Gas</span>
+                                    <span>🌐 Multi‑Chain</span>
+                                </div>
+                                <div class="card-badge">-50% OFF</div>
                             </div>
-                            <div class="form-field">
-                                <label for="email" class="field-label">>_ email:</label>
-                                <input type="email" id="email" class="cyber-input" placeholder="Enter your email" required>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <div class="back-icon">🔗</div>
+                                    <p>Secure, efficient smart contracts deployed on Ethereum, Polygon, and other EVM chains.</p>
+                                    <div class="back-tech">
+                                        <span>Solidity</span>
+                                        <span>Hardhat</span>
+                                        <span>OpenZeppelin</span>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Service 3 - dApp Development -->
+                    <div class="service-card-3d" data-service="dapps">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">📱</div>
+                                <h3 class="card-title">dApp Development</h3>
+                                <div class="card-price">
+                                    <span class="price-currency">$</span>
+                                    <span class="price-value">750</span>
+                                    <span class="price-period">/project</span>
+                                </div>
+                                <div class="card-features">
+                                    <span>🌐 Web3 Integration</span>
+                                    <span>💳 Wallet Connect</span>
+                                    <span>🔄 Real‑Time Data</span>
+                                </div>
+                                <div class="card-badge">-50% OFF</div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <div class="back-icon">📱</div>
+                                    <p>Full-stack decentralized applications with seamless Web3 integration and stunning UIs.</p>
+                                    <div class="back-tech">
+                                        <span>Web3.js</span>
+                                        <span>Ethers</span>
+                                        <span>IPFS</span>
+                                        <span>TheGraph</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Service 4 - Data Analysis -->
+                    <div class="service-card-3d" data-service="data">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="card-icon">📊</div>
+                                <h3 class="card-title">Data Analysis</h3>
+                                <div class="card-price">
+                                    <span class="price-currency">$</span>
+                                    <span class="price-value">200</span>
+                                    <span class="price-period">/analysis</span>
+                                </div>
+                                <div class="card-features">
+                                    <span>🐍 Python/R</span>
+                                    <span>📈 Visualization</span>
+                                    <span>🔍 Insights</span>
+                                </div>
+                                <div class="card-badge">-50% OFF</div>
+                            </div>
+                            <div class="card-back">
+                                <div class="back-content">
+                                    <div class="back-icon">📊</div>
+                                    <p>Transform raw data into actionable insights with advanced analytics and stunning visualizations.</p>
+                                    <div class="back-tech">
+                                        <span>Pandas</span>
+                                        <span>NumPy</span>
+                                        <span>Matplotlib</span>
+                                        <span>R</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skills Section - With proper flip cards -->
+        <section id="skills" class="section skills">
+            <div class="container">
+                <div class="section-badge centered">
+                    <span class="badge-bracket">[</span>
+                    <span>SKILLS.TECH_STACK</span>
+                    <span class="badge-bracket">]</span>
+                </div>
+                
+                <h2 class="section-title centered">
+                    <span class="glitch-text-sm" data-text="// MY ARSENAL">// MY ARSENAL</span>
+                </h2>
+                
+                <div class="skills-grid portfolio-style" id="skillsGrid">
+                    <!-- Skill 1 - JavaScript/TypeScript -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">⚛️</div>
+                                <h3>JavaScript/TypeScript</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 90%"></div>
+                                </div>
+                                <span class="skill-percent">90%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">⚛️</div>
+                                    <div class="skill-back-title">MAIN STACK</div>
+                                    <div class="skill-back-text">Primary language for frontend and backend development</div>
+                                    <div class="skill-back-stats">
+                                        <span>React</span>
+                                        <span>Node</span>
+                                        <span>Next.js</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 2 - Python -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">🐍</div>
+                                <h3>Python</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 85%"></div>
+                                </div>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">🐍</div>
+                                    <div class="skill-back-title">DATA & BACKEND</div>
+                                    <div class="skill-back-text">Data analysis, automation, and backend APIs</div>
+                                    <div class="skill-back-stats">
+                                        <span>Django</span>
+                                        <span>Pandas</span>
+                                        <span>FastAPI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 3 - Solidity -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">🔷</div>
+                                <h3>Solidity</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 65%"></div>
+                                </div>
+                                <span class="skill-percent">65%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">🔷</div>
+                                    <div class="skill-back-title">BLOCKCHAIN</div>
+                                    <div class="skill-back-text">Smart contract development for Ethereum and EVM</div>
+                                    <div class="skill-back-stats">
+                                        <span>Hardhat</span>
+                                        <span>OpenZeppelin</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 4 - SQL -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">📦</div>
+                                <h3>SQL</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 85%"></div>
+                                </div>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">📦</div>
+                                    <div class="skill-back-title">DATABASES</div>
+                                    <div class="skill-back-text">Complex queries, optimization, and database design</div>
+                                    <div class="skill-back-stats">
+                                        <span>PostgreSQL</span>
+                                        <span>MySQL</span>
+                                        <span>MongoDB</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 5 - Angular -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">🅰️</div>
+                                <h3>Angular</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 85%"></div>
+                                </div>
+                                <span class="skill-percent">85%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">🅰️</div>
+                                    <div class="skill-back-title">FRONTEND</div>
+                                    <div class="skill-back-text">Enterprise-grade applications with Angular</div>
+                                    <div class="skill-back-stats">
+                                        <span>RxJS</span>
+                                        <span>NgRx</span>
+                                        <span>Angular Material</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 6 - Vue.js -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">💚</div>
+                                <h3>Vue.js</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 80%"></div>
+                                </div>
+                                <span class="skill-percent">80%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">💚</div>
+                                    <div class="skill-back-title">FRONTEND</div>
+                                    <div class="skill-back-text">Reactive and performant Vue applications</div>
+                                    <div class="skill-back-stats">
+                                        <span>Vuex</span>
+                                        <span>Nuxt.js</span>
+                                        <span>Pinia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 7 - R -->
+                    <div class="skill-card-3d">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">📊</div>
+                                <h3>R</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar" style="width: 70%"></div>
+                                </div>
+                                <span class="skill-percent">70%</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">📊</div>
+                                    <div class="skill-back-title">DATA SCIENCE</div>
+                                    <div class="skill-back-text">Statistical analysis and data visualization</div>
+                                    <div class="skill-back-stats">
+                                        <span>ggplot2</span>
+                                        <span>dplyr</span>
+                                        <span>Shiny</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skill 8 - Web3.js (Learning) -->
+                    <div class="skill-card-3d web3-skill">
+                        <div class="skill-inner">
+                            <div class="skill-front">
+                                <div class="skill-icon">⛓️</div>
+                                <h3>Web3.js</h3>
+                                <div class="skill-level">
+                                    <div class="level-bar learning" style="width: 55%"></div>
+                                </div>
+                                <span class="skill-percent">55%</span>
+                                <span class="skill-badge">LEARNING</span>
+                            </div>
+                            <div class="skill-back">
+                                <div class="skill-back-content">
+                                    <div class="skill-back-icon">⛓️</div>
+                                    <div class="skill-back-title">WEB3</div>
+                                    <div class="skill-back-text">Blockchain interaction and smart contract integration</div>
+                                    <div class="skill-back-stats">
+                                        <span>Ethers.js</span>
+                                        <span>Web3.py</span>
+                                        <span>WalletConnect</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="section contact">
+            <div class="container">
+                <div class="section-badge centered">
+                    <span class="badge-bracket">[</span>
+                    <span>CONNECT.MATRIX</span>
+                    <span class="badge-bracket">]</span>
+                </div>
+                
+                <h2 class="section-title centered">
+                    <span class="glitch-text-sm" data-text="// INITIATE CONTACT">// INITIATE CONTACT</span>
+                </h2>
+                
+                <div class="contact-grid">
+                    <div class="contact-info-card">
+                        <div class="contact-glow"></div>
+                        <h3 class="contact-title">Let's Build Something Extraordinary</h3>
+                        <p class="contact-text">Ready to push the boundaries of what's possible? Reach out and let's create the future together.</p>
+                        
+                        <div class="contact-links">
+                            <a href="mailto:hello@nutmeg.dev" class="contact-link-item">
+                                <div class="link-icon">📧</div>
+                                <div class="link-details">
+                                    <span class="link-label">EMAIL</span>
+                                    <span class="link-value">hello@nutmeg.dev</span>
+                                </div>
+                                <div class="link-arrow">→</div>
+                            </a>
+                            
+                            <a href="#" class="contact-link-item">
+                                <div class="link-icon">💬</div>
+                                <div class="link-details">
+                                    <span class="link-label">TELEGRAM</span>
+                                    <span class="link-value">@nutmeg_dev</span>
+                                </div>
+                                <div class="link-arrow">→</div>
+                            </a>
+                            
+                            <a href="#" class="contact-link-item">
+                                <div class="link-icon">🐦</div>
+                                <div class="link-details">
+                                    <span class="link-label">X (TWITTER)</span>
+                                    <span class="link-value">@nutmeg_dev</span>
+                                </div>
+                                <div class="link-arrow">→</div>
+                            </a>
+                            
+                            <a href="#" class="contact-link-item">
+                                <div class="link-icon">💼</div>
+                                <div class="link-details">
+                                    <span class="link-label">LINKEDIN</span>
+                                    <span class="link-value">/in/nutmeg-dev</span>
+                                </div>
+                                <div class="link-arrow">→</div>
+                            </a>
+                            
+                            <a href="#" class="contact-link-item">
+                                <div class="link-icon">📂</div>
+                                <div class="link-details">
+                                    <span class="link-label">GITHUB</span>
+                                    <span class="link-value">/nutmeg-dev</span>
+                                </div>
+                                <div class="link-arrow">→</div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form-card">
+                        <div class="form-glow"></div>
+                        <h3 class="form-title">Send a Message</h3>
+                        
+                        <form id="cyberForm" class="cyber-form">
                             <div class="form-field">
-                                <label for="service" class="field-label">>_ service:</label>
-                                <select id="service" class="cyber-select" required>
-                                    <option value="">Select service</option>
+                                <input type="text" id="formName" placeholder=" " required>
+                                <label for="formName">IDENTITY</label>
+                                <div class="field-border"></div>
+                            </div>
+                            
+                            <div class="form-field">
+                                <input type="email" id="formEmail" placeholder=" " required>
+                                <label for="formEmail">COMM LINK</label>
+                                <div class="field-border"></div>
+                            </div>
+                            
+                            <div class="form-field">
+                                <select id="formService" required>
+                                    <option value="" disabled selected></option>
                                     <option>Web Development</option>
                                     <option>Smart Contract</option>
                                     <option>dApp Development</option>
                                     <option>Data Analysis</option>
                                 </select>
+                                <label for="formService">SERVICE REQUIRED</label>
+                                <div class="field-border"></div>
                             </div>
+                            
                             <div class="form-field">
-                                <label for="message" class="field-label">>_ message:</label>
-                                <textarea id="message" class="cyber-textarea" placeholder="Describe your project..." rows="3"></textarea>
+                                <textarea id="formMessage" rows="4" placeholder=" " required></textarea>
+                                <label for="formMessage">MESSAGE ENCRYPTED</label>
+                                <div class="field-border"></div>
                             </div>
-                            <button type="submit" class="cyber-button submit">
-                                <span class="button-text">SEND_MESSAGE</span>
-                                <span class="button-glitch"></span>
+                            
+                            <button type="submit" class="cyber-btn primary full">
+                                <span class="btn-text">TRANSMIT MESSAGE</span>
+                                <span class="btn-icon">📡</span>
+                                <span class="btn-glitch"></span>
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
         </section>
-
+        
         <!-- Footer -->
-        <footer class="cyber-footer">
-            <div class="footer-content">
-                <span class="footer-code">&lt;cyber_dev/&gt;</span>
-                <span class="footer-divider">||</span>
-                <span class="footer-copy">2025 // ALL RIGHTS RESERVED</span>
-                <span class="footer-divider">||</span>
-                <span class="footer-version">v2.0.1 [CYBERPUNK]</span>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-left">
+                    <span class="footer-logo">
+                        <span class="bracket neon-green">[</span>
+                        <span>nutmeg.dev</span>
+                        <span class="bracket neon-green">]</span>
+                    </span>
+                    <span class="footer-copy">© 2025 // ALL SYSTEMS OPERATIONAL</span>
+                </div>
+                
+                <div class="footer-center">
+                    <div class="terminal-footer">
+                        <span class="footer-prompt">$></span>
+                        <span class="footer-command">echo "BUILT WITH ⚡"</span>
+                    </div>
+                </div>
+                
+                <div class="footer-right">
+                    <span class="footer-version">v3.1.4 // MATRIX EDITION</span>
+                </div>
             </div>
         </footer>
     </div>
-
+    
+    <!-- Easter Egg Console -->
+    <div id="easterEggConsole" class="easter-egg-console hidden">
+        <div class="console-header">
+            <span>DEVELOPER CONSOLE [ACCESS GRANTED]</span>
+            <button class="console-close">✕</button>
+        </div>
+        <div class="console-body">
+            <div class="console-output">
+                <div class="console-line">> Welcome to the hidden dimension...</div>
+                <div class="console-line">> Type 'help' to see available commands</div>
+            </div>
+            <div class="console-input-line">
+                <span class="console-prompt">$></span>
+                <input type="text" id="consoleInput" class="console-input" placeholder="Enter command...">
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
