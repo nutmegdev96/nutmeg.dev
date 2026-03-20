@@ -1,324 +1,605 @@
-// Matrix effect with cyberpunk colors
+// ========== MATRIX RAIN EFFECT ==========
 const canvas = document.getElementById('matrixCanvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let width = window.innerWidth;
+let height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
 
-// Cyberpunk characters
 const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
 const charArray = chars.split("");
-
-const fontSize = 16;
-const columns = canvas.width / fontSize;
-
+const fontSize = 14;
+const columns = width / fontSize;
 const drops = [];
-for(let x = 0; x < columns; x++) {
-    drops[x] = Math.floor(Math.random() * canvas.height);
+
+for (let x = 0; x < columns; x++) {
+    drops[x] = Math.floor(Math.random() * height);
 }
 
-// Cyberpunk color cycling
-let hue = 180; // Start with cyan
+let hue = 120;
+let hueDirection = 1;
 
 function drawMatrix() {
-    ctx.fillStyle = 'rgba(5, 5, 7, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Cycle through cyberpunk colors
-    hue = (hue + 0.1) % 360;
-    const color = `hsl(${hue}, 100%, 50%)`;
+    ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+    ctx.fillRect(0, 0, width, height);
     
-    ctx.fillStyle = color;
+    // Cycle colors for cyberpunk effect
+    hue += 0.2 * hueDirection;
+    if (hue > 150) hueDirection = -1;
+    if (hue < 90) hueDirection = 1;
+    
+    ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
     ctx.font = fontSize + 'px monospace';
-
-    for(let i = 0; i < drops.length; i++) {
+    
+    for (let i = 0; i < drops.length; i++) {
         const text = charArray[Math.floor(Math.random() * charArray.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if(drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
             drops[i] = 0;
         }
         drops[i]++;
     }
 }
 
-setInterval(drawMatrix, 30);
+setInterval(drawMatrix, 40);
 
-// Initial loading animation
+// ========== LOADING SCREEN ==========
 window.addEventListener('load', () => {
-    const overlay = document.getElementById('initialOverlay');
+    const loadingScreen = document.getElementById('loadingScreen');
     const mainContent = document.getElementById('mainContent');
+    const progressSpan = document.querySelector('.loading-progress');
     
-    // Progress bar animation
-    const progressFill = document.querySelector('.progress-fill');
-    let width = 0;
+    let progress = 0;
     const interval = setInterval(() => {
-        width += 1;
-        progressFill.style.width = width + '%';
-        if (width >= 100) {
+        progress += Math.random() * 10;
+        if (progress >= 100) {
+            progress = 100;
             clearInterval(interval);
             
-            // Fade out overlay
             setTimeout(() => {
-                overlay.classList.add('fade-out');
+                loadingScreen.classList.add('fade-out');
                 setTimeout(() => {
-                    overlay.style.display = 'none';
+                    loadingScreen.style.display = 'none';
                     mainContent.classList.remove('hidden');
-                    startCyberEffects();
-                }, 1000);
+                    initAnimations();
+                    animateNumbers();
+                    revealSections();
+                }, 800);
             }, 500);
         }
-    }, 30);
+        if (progressSpan) progressSpan.textContent = Math.floor(progress) + '%';
+    }, 150);
 });
 
-// Cyberpunk effects
-function startCyberEffects() {
-    animateTitle();
-    initSkillNodes();
-    initParticles();
+// ========== NUMBER COUNTER ANIMATION ==========
+function animateNumbers() {
+    const statValues = document.querySelectorAll('.stat-value[data-count]');
+    
+    statValues.forEach(stat => {
+        const target = parseInt(stat.getAttribute('data-count'));
+        let current = 0;
+        const increment = target / 50;
+        
+        const updateNumber = () => {
+            current += increment;
+            if (current >= target) {
+                stat.textContent = target;
+                return;
+            }
+            stat.textContent = Math.floor(current);
+            requestAnimationFrame(updateNumber);
+        };
+        
+        updateNumber();
+    });
 }
 
-// Glitch title animation
-function animateTitle() {
-    const titles = document.querySelectorAll('.cyber-title-line');
-    setInterval(() => {
-        titles.forEach(title => {
-            title.style.transform = `skew(${Math.random() * 10 - 5}deg)`;
-            setTimeout(() => {
-                title.style.transform = 'skew(0)';
-            }, 100);
+// ========== SCROLL REVEAL ANIMATIONS ==========
+function revealSections() {
+    const sections = document.querySelectorAll('.section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
         });
-    }, 3000);
+    }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+    
+    sections.forEach(section => observer.observe(section));
 }
 
-// Skill nodes interaction
-function initSkillNodes() {
-    document.querySelectorAll('.skill-node').forEach(node => {
-        node.addEventListener('mouseenter', function() {
-            const glow = this.querySelector('.node-glow');
-            glow.style.opacity = '0.5';
+// ========== 3D CARD EFFECTS ==========
+function init3DCards() {
+    const cards = document.querySelectorAll('.service-card-3d, .skill-card-3d');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
             
-            // Create data stream effect
-            for (let i = 0; i < 5; i++) {
-                createDataStream(this);
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+    });
+}
+
+// ========== NAVIGATION ACTIVE STATE ==========
+function initNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section');
+    
+    window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.clientHeight;
+            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
             }
         });
         
-        node.addEventListener('mouseleave', function() {
-            const glow = this.querySelector('.node-glow');
-            glow.style.opacity = '0';
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            targetSection.scrollIntoView({ behavior: 'smooth' });
         });
     });
 }
 
-// Data stream effect
-function createDataStream(element) {
-    const rect = element.getBoundingClientRect();
-    const stream = document.createElement('div');
-    stream.className = 'data-stream';
-    stream.style.cssText = `
-        position: fixed;
-        left: ${rect.left + Math.random() * rect.width}px;
-        top: ${rect.top}px;
-        color: #0ff;
-        font-size: 12px;
-        pointer-events: none;
-        z-index: 1000;
-        animation: stream-fall 1s linear forwards;
-    `;
-    stream.textContent = '0101';
-    document.body.appendChild(stream);
-    
-    setTimeout(() => stream.remove(), 1000);
+// ========== SCROLL TO SECTION FUNCTIONS ==========
+function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
 }
 
-// Particle effect on Web3 click
-document.querySelectorAll('.web3-tag, .highlight-web3').forEach(el => {
-    el.addEventListener('click', function(e) {
-        for (let i = 0; i < 15; i++) {
-            createCyberParticle(e.clientX, e.clientY);
-        }
-    });
-});
+// Button event listeners
+const exploreBtn = document.getElementById('exploreBtn');
+const contactBtn = document.getElementById('contactBtn');
 
-function createCyberParticle(x, y) {
-    const particle = document.createElement('div');
-    particle.style.cssText = `
-        position: fixed;
-        left: ${x}px;
-        top: ${y}px;
-        color: ${Math.random() > 0.5 ? '#ff00ff' : '#00ffff'};
-        font-size: ${Math.random() * 20 + 10}px;
-        font-weight: bold;
-        pointer-events: none;
-        z-index: 1000;
-        text-shadow: 0 0 10px currentColor;
-        animation: particle-burst 1s ease-out forwards;
-    `;
-    particle.textContent = Math.random() > 0.5 ? '⚡' : '01';
-    document.body.appendChild(particle);
-    
-    setTimeout(() => particle.remove(), 1000);
+if (exploreBtn) {
+    exploreBtn.addEventListener('click', () => scrollToSection('services'));
+}
+if (contactBtn) {
+    contactBtn.addEventListener('click', () => scrollToSection('contact'));
 }
 
-// Random particles background
-function initParticles() {
-    setInterval(() => {
-        if (Math.random() > 0.7) {
-            const x = Math.random() * window.innerWidth;
-            const y = Math.random() * window.innerHeight;
-            createCyberParticle(x, y);
-        }
-    }, 500);
-}
-
-// Smooth scroll
-document.querySelectorAll('.neon-link').forEach(link => {
-    link.addEventListener('click', (e) => {
+// ========== FORM SUBMISSION ==========
+const cyberForm = document.getElementById('cyberForm');
+if (cyberForm) {
+    cyberForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+        const btn = cyberForm.querySelector('button');
+        const originalText = btn.innerHTML;
+        
+        btn.innerHTML = '<span class="btn-text">TRANSMITTING...</span><span class="btn-icon">📡</span>';
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            showCyberNotification('MESSAGE TRANSMITTED SUCCESSFULLY');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            cyberForm.reset();
+        }, 2000);
     });
-});
+}
 
-// Active navigation highlight
-window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('.section');
-    const navLinks = document.querySelectorAll('.neon-link');
-    
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// Form handling
-document.getElementById('quoteForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    const button = e.target.querySelector('button');
-    const originalText = button.querySelector('.button-text').textContent;
-    button.querySelector('.button-text').textContent = 'SENDING...';
-    button.disabled = true;
-    
-    // Cyberpunk style alert
-    setTimeout(() => {
-        showCyberAlert('MESSAGE TRANSMITTED ✓\n\nI\'ll contact you through the neural link...');
-        button.querySelector('.button-text').textContent = originalText;
-        button.disabled = false;
-        e.target.reset();
-    }, 1500);
-});
-
-function showCyberAlert(message) {
-    const alert = document.createElement('div');
-    alert.style.cssText = `
+// ========== CYBER NOTIFICATION ==========
+function showCyberNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'cyber-notification';
+    notification.style.cssText = `
         position: fixed;
-        top: 50%;
+        bottom: 20px;
         left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(5, 5, 7, 0.95);
-        border: 2px solid #00ffff;
-        padding: 2rem;
-        color: #00ffff;
-        font-family: 'Share Tech Mono', monospace;
-        text-align: center;
-        z-index: 2000;
-        box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
-        animation: alert-pulse 2s infinite;
+        transform: translateX(-50%);
+        background: var(--bg-card);
+        border: 1px solid var(--neon-green);
+        border-radius: 8px;
+        padding: 1rem 2rem;
+        color: var(--neon-green);
+        font-family: monospace;
+        z-index: 1000;
+        animation: slideUp 0.3s ease;
+        box-shadow: 0 0 20px var(--neon-green);
     `;
-    alert.textContent = message;
-    document.body.appendChild(alert);
+    notification.textContent = `> ${message}`;
+    document.body.appendChild(notification);
     
     setTimeout(() => {
-        alert.style.animation = 'fade-out 0.5s forwards';
-        setTimeout(() => alert.remove(), 500);
+        notification.style.animation = 'slideDown 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-// Add CSS animations dynamically
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes stream-fall {
-        0% { transform: translateY(-100%); opacity: 1; }
-        100% { transform: translateY(100vh); opacity: 0; }
+// Add notification animations
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     }
-    
-    @keyframes particle-burst {
-        0% { transform: translate(0, 0) scale(1); opacity: 1; }
-        100% { transform: translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0); opacity: 0; }
-    }
-    
-    @keyframes alert-pulse {
-        0%, 100% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.5); }
-        50% { box-shadow: 0 0 100px rgba(255, 0, 255, 0.5); }
-    }
-    
-    @keyframes fade-out {
-        to { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    @keyframes slideDown {
+        from {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+        }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(notificationStyles);
 
-// Mouse trail effect
-document.addEventListener('mousemove', (e) => {
-    if (Math.random() > 0.9) {
-        const trail = document.createElement('div');
-        trail.style.cssText = `
-            position: fixed;
-            left: ${e.clientX}px;
-            top: ${e.clientY}px;
-            width: 2px;
-            height: 2px;
-            background: ${Math.random() > 0.5 ? '#00ffff' : '#ff00ff'};
-            box-shadow: 0 0 10px currentColor;
-            pointer-events: none;
-            z-index: 9999;
-            animation: trail-fade 0.5s forwards;
-        `;
-        document.body.appendChild(trail);
-        setTimeout(() => trail.remove(), 500);
-    }
-});
-
-// Keyboard easter egg
-let konamiCode = [];
-const secretCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]; // Konami code
+// ========== EASTER EGG: KONAMI CODE ==========
+let konamiSequence = [];
+const konamiCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
 
 document.addEventListener('keydown', (e) => {
-    konamiCode.push(e.keyCode);
-    if (konamiCode.length > secretCode.length) {
-        konamiCode.shift();
+    konamiSequence.push(e.keyCode);
+    if (konamiSequence.length > konamiCode.length) {
+        konamiSequence.shift();
     }
     
-    if (konamiCode.join() === secretCode.join()) {
-        activateCyberMode();
-        konamiCode = [];
+    if (konamiSequence.join() === konamiCode.join()) {
+        activateEasterEgg();
+        konamiSequence = [];
     }
 });
 
-function activateCyberMode() {
-    document.body.style.animation = 'rainbow-bg 0.1s infinite';
+function activateEasterEgg() {
+    const consoleEl = document.getElementById('easterEggConsole');
+    if (!consoleEl) return;
+    
+    consoleEl.classList.remove('hidden');
+    
+    // Matrix rain intensifies temporarily
+    canvas.style.opacity = '0.3';
     setTimeout(() => {
-        document.body.style.animation = 'none';
-    }, 3000);
+        canvas.style.opacity = '0.12';
+    }, 2000);
+    
+    // Add console output
+    const consoleOutput = document.querySelector('.console-output');
+    if (consoleOutput) {
+        consoleOutput.innerHTML += '<div class="console-line">> KONAMI CODE ACTIVATED</div>';
+        consoleOutput.innerHTML += '<div class="console-line">> Welcome to the developer dimension</div>';
+        consoleOutput.innerHTML += '<div class="console-line">> Type "help" for available commands</div>';
+    }
+    
+    // Console input handling
+    const consoleInput = document.getElementById('consoleInput');
+    if (consoleInput) {
+        // Remove existing listener to avoid duplicates
+        const newInput = consoleInput.cloneNode(true);
+        consoleInput.parentNode.replaceChild(newInput, consoleInput);
+        
+        newInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const command = newInput.value.toLowerCase();
+                processConsoleCommand(command);
+                newInput.value = '';
+            }
+        });
+    }
+    
+    const consoleClose = document.querySelector('.console-close');
+    if (consoleClose) {
+        consoleClose.addEventListener('click', () => {
+            consoleEl.classList.add('hidden');
+        });
+    }
 }
 
-// Resize handler
+function processConsoleCommand(command) {
+    const output = document.querySelector('.console-output');
+    if (!output) return;
+    
+    output.innerHTML += `<div class="console-line">$> ${command}</div>`;
+    
+    switch(command) {
+        case 'help':
+            output.innerHTML += '<div class="console-line">Available commands:</div>';
+            output.innerHTML += '<div class="console-line">  matrix   - Intensify matrix rain</div>';
+            output.innerHTML += '<div class="console-line">  glitch   - Trigger glitch effect</div>';
+            output.innerHTML += '<div class="console-line">  reveal   - Show hidden content</div>';
+            output.innerHTML += '<div class="console-line">  rainbow  - Rainbow mode</div>';
+            output.innerHTML += '<div class="console-line">  exit     - Close console</div>';
+            break;
+        case 'matrix':
+            canvas.style.opacity = '0.3';
+            setTimeout(() => canvas.style.opacity = '0.12', 2000);
+            output.innerHTML += '<div class="console-line">> Matrix rain intensified</div>';
+            break;
+        case 'glitch':
+            document.body.style.animation = 'glitch 0.1s infinite';
+            setTimeout(() => document.body.style.animation = '', 1000);
+            output.innerHTML += '<div class="console-line">> Glitch mode activated</div>';
+            break;
+        case 'reveal':
+            output.innerHTML += '<div class="console-line">> Secret: Try typing "sudo make me a sandwich"</div>';
+            output.innerHTML += '<div class="console-line">> Another secret: Press "n" three times quickly...</div>';
+            break;
+        case 'rainbow':
+            let rainbowHue = 0;
+            const interval = setInterval(() => {
+                rainbowHue = (rainbowHue + 5) % 360;
+                document.documentElement.style.setProperty('--neon-green', `hsl(${rainbowHue}, 100%, 50%)`);
+                document.documentElement.style.setProperty('--neon-cyan', `hsl(${rainbowHue + 60}, 100%, 50%)`);
+            }, 100);
+            setTimeout(() => {
+                clearInterval(interval);
+                document.documentElement.style.setProperty('--neon-green', '#00ff9d');
+                document.documentElement.style.setProperty('--neon-cyan', '#00ffff');
+            }, 5000);
+            output.innerHTML += '<div class="console-line">> Rainbow mode activated (5 seconds)</div>';
+            break;
+        case 'exit':
+            document.getElementById('easterEggConsole')?.classList.add('hidden');
+            break;
+        default:
+            output.innerHTML += `<div class="console-line">Command not recognized: ${command}</div>`;
+    }
+    
+    output.scrollTop = output.scrollHeight;
+}
+
+// ========== ADDITIONAL EASTER EGG: "nutmeg" x3 ==========
+let nutmegCount = 0;
+let nutmegTimeout;
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'n' || e.key === 'N') {
+        nutmegCount++;
+        clearTimeout(nutmegTimeout);
+        nutmegTimeout = setTimeout(() => nutmegCount = 0, 1000);
+        
+        if (nutmegCount >= 3) {
+            createParticleExplosion();
+            showCyberNotification('SECRET UNLOCKED // NUTMEG PROTOCOL');
+            nutmegCount = 0;
+        }
+    }
+});
+
+function createParticleExplosion() {
+    const colors = ['#00ff9d', '#00ffff', '#ff00aa', '#a855f7'];
+    
+    for (let i = 0; i < 80; i++) {
+        const particle = document.createElement('div');
+        const startX = Math.random() * window.innerWidth;
+        const startY = Math.random() * window.innerHeight;
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 2 + Math.random() * 4;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.cssText = `
+            position: fixed;
+            left: ${startX}px;
+            top: ${startY}px;
+            width: 4px;
+            height: 4px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            box-shadow: 0 0 10px ${color};
+        `;
+        document.body.appendChild(particle);
+        
+        let x = startX;
+        let y = startY;
+        let opacity = 1;
+        
+        function animateParticle() {
+            x += vx;
+            y += vy;
+            opacity -= 0.015;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animateParticle);
+            } else {
+                particle.remove();
+            }
+        }
+        
+        animateParticle();
+    }
+}
+
+// ========== GLITCH EFFECT ON HOVER ==========
+document.querySelectorAll('.service-card-3d, .skill-card-3d, .contact-link-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        el.style.filter = 'drop-shadow(0 0 5px var(--neon-green))';
+    });
+    el.addEventListener('mouseleave', () => {
+        el.style.filter = 'none';
+    });
+});
+
+// ========== PARALLAX EFFECT FOR SKILL CARDS ==========
+function initParallaxCards() {
+    const skillCards = document.querySelectorAll('.skill-card-3d');
+    
+    skillCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${y * -10}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+        });
+    });
+}
+
+// ========== RANDOM GLITCH EFFECT (occasional) ==========
+setInterval(() => {
+    if (Math.random() > 0.97) {
+        const glitchElements = document.querySelectorAll('.glitch-text, .glitch-text-sm, .hero-title');
+        glitchElements.forEach(el => {
+            el.style.transform = `skew(${Math.random() * 10 - 5}deg)`;
+            setTimeout(() => {
+                el.style.transform = 'skew(0)';
+            }, 100);
+        });
+    }
+}, 5000);
+
+// ========== TYPEWRITER EFFECT FOR ABOUT SECTION ==========
+function initTypewriter() {
+    const aboutText = document.querySelector('.about-text');
+    if (!aboutText) return;
+    
+    const paragraphs = aboutText.querySelectorAll('p');
+    const originalContents = Array.from(paragraphs).map(p => p.innerHTML);
+    
+    // Clear all paragraphs
+    paragraphs.forEach(p => p.innerHTML = '');
+    
+    let currentParagraph = 0;
+    let currentChar = 0;
+    
+    function typeNextChar() {
+        if (currentParagraph >= paragraphs.length) return;
+        
+        const p = paragraphs[currentParagraph];
+        const content = originalContents[currentParagraph];
+        
+        if (currentChar < content.length) {
+            p.innerHTML += content[currentChar];
+            currentChar++;
+            setTimeout(typeNextChar, 15);
+        } else {
+            currentParagraph++;
+            currentChar = 0;
+            setTimeout(typeNextChar, 200);
+        }
+    }
+    
+    // Start typing when about section is visible
+    const aboutSection = document.getElementById('about');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && currentParagraph === 0 && currentChar === 0) {
+                typeNextChar();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    if (aboutSection) observer.observe(aboutSection);
+}
+
+// ========== RESIZE HANDLER ==========
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Recalculate drops for new width
+    const newColumns = width / fontSize;
+    drops.length = newColumns;
+    for (let x = 0; x < newColumns; x++) {
+        if (drops[x] === undefined) drops[x] = Math.floor(Math.random() * height);
+    }
+});
+
+// ========== INIT ALL FUNCTIONS ==========
+function initAnimations() {
+    init3DCards();
+    initNavigation();
+    initParallaxCards();
+    initTypewriter();
+    
+    // Add random glitch class to elements
+    setInterval(() => {
+        const randomCard = document.querySelectorAll('.service-card-3d, .skill-card-3d')[Math.floor(Math.random() * 8)];
+        if (randomCard) {
+            randomCard.style.animation = 'glitch 0.2s';
+            setTimeout(() => {
+                randomCard.style.animation = '';
+            }, 200);
+        }
+    }, 8000);
+}
+
+// ========== ADD GLITCH ANIMATION KEYFRAMES ==========
+const glitchKeyframes = document.createElement('style');
+glitchKeyframes.textContent = `
+    @keyframes glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 1px); }
+        40% { transform: translate(2px, -1px); }
+        60% { transform: translate(-1px, 2px); }
+        80% { transform: translate(1px, -2px); }
+        100% { transform: translate(0); }
+    }
+`;
+document.head.appendChild(glitchKeyframes);
+
+// ========== SCROLL PROGRESS INDICATOR ==========
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollY / maxScroll) * 100;
+    
+    // Optional: Add a scroll progress bar to the top
+    let progressBar = document.querySelector('.scroll-progress-bar');
+    if (!progressBar && progress > 0) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'scroll-progress-bar';
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+            z-index: 1000;
+            transition: width 0.1s;
+        `;
+        document.body.appendChild(progressBar);
+    }
+    if (progressBar) {
+        progressBar.style.width = progress + '%';
+    }
 });
