@@ -288,6 +288,7 @@ body {
 .hero {
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .hero-container {
@@ -295,78 +296,37 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 80vh;
+    width: 100%;
 }
 
 .hero-content-centered {
     text-align: center;
     max-width: 900px;
-    margin: 0 auto;
     width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .hero-title {
     font-size: 5rem;
     line-height: 1.2;
     margin-bottom: 1.5rem;
+    text-align: center;
+    width: 100%;
 }
 
 .title-line {
     display: inline-block;
     margin: 0 0.2rem;
-}
-
-.glitch-text {
-    position: relative;
-    animation: glitch 3s infinite;
-}
-
-.glitch-text::before,
-.glitch-text::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.8;
-}
-
-.glitch-text::before {
-    animation: glitchOffset 0.3s infinite;
-    color: var(--neon-pink);
-    z-index: -1;
-}
-
-.glitch-text::after {
-    animation: glitchOffset 0.3s infinite reverse;
-    color: var(--neon-cyan);
-    z-index: -2;
-}
-
-.glitch-text.highlight {
-    color: var(--neon-green);
-    text-shadow: var(--glow-md) var(--neon-green);
+    text-align: center;
 }
 
 .hero-description {
     font-size: 1.2rem;
     color: var(--text-secondary);
     margin-bottom: 2rem;
-}
-
-.neon-cyan { 
-    color: var(--neon-cyan); 
-    text-shadow: var(--glow-sm) var(--neon-cyan); 
-}
-
-.neon-purple { 
-    color: var(--neon-purple); 
-    text-shadow: var(--glow-sm) var(--neon-purple); 
-}
-
-.neon-pink { 
-    color: var(--neon-pink); 
-    text-shadow: var(--glow-sm) var(--neon-pink); 
+    text-align: center;
+    width: 100%;
 }
 
 .hero-stats {
@@ -374,30 +334,39 @@ body {
     gap: 3rem;
     margin-bottom: 2rem;
     justify-content: center;
+    width: 100%;
 }
 
 .stat-item {
     text-align: center;
 }
 
-.stat-value {
-    display: block;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--neon-green);
-    text-shadow: var(--glow-sm) var(--neon-green);
-}
-
-.stat-label {
-    font-size: 0.7rem;
-    letter-spacing: 1px;
-    color: var(--text-secondary);
-}
-
 .hero-actions {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .title-line {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    .hero-stats {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .hero-actions {
+        flex-wrap: wrap;
+    }
 }
 
 /* ========== CYBER BUTTONS ========== */
