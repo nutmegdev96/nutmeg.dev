@@ -477,49 +477,11 @@ setInterval(() => {
     }
 }, 5000);
 
-// ========== TYPEWRITER EFFECT FOR ABOUT SECTION ==========
+// ========== TYPEWRITER EFFECT - DISABLED (previene layout shift) ==========
 function initTypewriter() {
-    const aboutText = document.querySelector('.about-text');
-    if (!aboutText) return;
-    
-    const paragraphs = aboutText.querySelectorAll('p');
-    const originalContents = Array.from(paragraphs).map(p => p.innerHTML);
-    
-    // Clear all paragraphs
-    paragraphs.forEach(p => p.innerHTML = '');
-    
-    let currentParagraph = 0;
-    let currentChar = 0;
-    
-    function typeNextChar() {
-        if (currentParagraph >= paragraphs.length) return;
-        
-        const p = paragraphs[currentParagraph];
-        const content = originalContents[currentParagraph];
-        
-        if (currentChar < content.length) {
-            p.innerHTML += content[currentChar];
-            currentChar++;
-            setTimeout(typeNextChar, 15);
-        } else {
-            currentParagraph++;
-            currentChar = 0;
-            setTimeout(typeNextChar, 200);
-        }
-    }
-    
-    // Start typing when about section is visible
-    const aboutSection = document.getElementById('about');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && currentParagraph === 0 && currentChar === 0) {
-                typeNextChar();
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    if (aboutSection) observer.observe(aboutSection);
+    // Typewriter effect removed to prevent layout shift
+    // All text is already visible in HTML from the start
+    console.log('Typewriter disabled - no layout shift');
 }
 
 // ========== RESIZE HANDLER ==========
